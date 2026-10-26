@@ -1,0 +1,829 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище CurePawModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PetId" Type="int" />
+        </EntityType>
+        <EntityType Name="AppointmentServices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Appointment" Type="int" />
+          <Property Name="service" Type="int" />
+        </EntityType>
+        <EntityType Name="AppointmentStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EmployeeServices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="service" Type="int" />
+        </EntityType>
+        <EntityType Name="EmployeeSpeciality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Pet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Breed" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PetType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Category" Type="int" />
+        </EntityType>
+        <EntityType Name="ServiceCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Role" Type="int" />
+          <Property Name="SpecialityId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserPets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Client" Type="int" />
+          <Property Name="pet" Type="int" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Appointment_AppointmentStatus">
+          <End Role="AppointmentStatus" Type="Self.AppointmentStatus" Multiplicity="0..1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppointmentStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Appointment_UserPets">
+          <End Role="UserPets" Type="Self.UserPets" Multiplicity="0..1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="PetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentServices_Appointment1">
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="0..1" />
+          <End Role="AppointmentServices" Type="Self.AppointmentServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppointmentServices">
+              <PropertyRef Name="Appointment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentServices_EmployeeServices">
+          <End Role="EmployeeServices" Type="Self.EmployeeServices" Multiplicity="0..1" />
+          <End Role="AppointmentServices" Type="Self.AppointmentServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeServices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppointmentServices">
+              <PropertyRef Name="service" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoryServices_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="EmployeeServices" Type="Self.EmployeeServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeServices">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeCategories_Service">
+          <End Role="Service" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="EmployeeServices" Type="Self.EmployeeServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeServices">
+              <PropertyRef Name="service" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pet_PetType">
+          <End Role="PetType" Type="Self.PetType" Multiplicity="0..1" />
+          <End Role="Pet" Type="Self.Pet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pet">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_EmployeeCategory">
+          <End Role="ServiceCategory" Type="Self.ServiceCategory" Multiplicity="0..1" />
+          <End Role="Service" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_EmployeeSpeciality">
+          <End Role="EmployeeSpeciality" Type="Self.EmployeeSpeciality" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeSpeciality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="SpecialityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserRole">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersPet_Pet">
+          <End Role="Pet" Type="Self.Pet" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPets" Type="Self.UserPets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPets">
+              <PropertyRef Name="pet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersPet_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserPets" Type="Self.UserPets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPets">
+              <PropertyRef Name="Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CurePawModelContainer">
+          <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppointmentServices" EntityType="Self.AppointmentServices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppointmentStatus" EntityType="Self.AppointmentStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeServices" EntityType="Self.EmployeeServices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeSpeciality" EntityType="Self.EmployeeSpeciality" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pet" EntityType="Self.Pet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PetType" EntityType="Self.PetType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceCategory" EntityType="Self.ServiceCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPets" EntityType="Self.UserPets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Appointment_AppointmentStatus" Association="Self.FK_Appointment_AppointmentStatus">
+            <End Role="AppointmentStatus" EntitySet="AppointmentStatus" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Appointment_UserPets" Association="Self.FK_Appointment_UserPets">
+            <End Role="UserPets" EntitySet="UserPets" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentServices_Appointment1" Association="Self.FK_AppointmentServices_Appointment1">
+            <End Role="Appointment" EntitySet="Appointment" />
+            <End Role="AppointmentServices" EntitySet="AppointmentServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentServices_EmployeeServices" Association="Self.FK_AppointmentServices_EmployeeServices">
+            <End Role="EmployeeServices" EntitySet="EmployeeServices" />
+            <End Role="AppointmentServices" EntitySet="AppointmentServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoryServices_User" Association="Self.FK_CategoryServices_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="EmployeeServices" EntitySet="EmployeeServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeCategories_Service" Association="Self.FK_EmployeeCategories_Service">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="EmployeeServices" EntitySet="EmployeeServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pet_PetType" Association="Self.FK_Pet_PetType">
+            <End Role="PetType" EntitySet="PetType" />
+            <End Role="Pet" EntitySet="Pet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_EmployeeCategory" Association="Self.FK_Service_EmployeeCategory">
+            <End Role="ServiceCategory" EntitySet="ServiceCategory" />
+            <End Role="Service" EntitySet="Service" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_EmployeeSpeciality" Association="Self.FK_User_EmployeeSpeciality">
+            <End Role="EmployeeSpeciality" EntitySet="EmployeeSpeciality" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserRole" Association="Self.FK_User_UserRole">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersPet_Pet" Association="Self.FK_UsersPet_Pet">
+            <End Role="Pet" EntitySet="Pet" />
+            <End Role="UserPets" EntitySet="UserPets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersPet_User" Association="Self.FK_UsersPet_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserPets" EntitySet="UserPets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CurePawModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CurePawEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Appointments" EntityType="CurePawModel.Appointment" />
+          <EntitySet Name="AppointmentServices" EntityType="CurePawModel.AppointmentService" />
+          <EntitySet Name="AppointmentStatus" EntityType="CurePawModel.AppointmentStatu" />
+          <EntitySet Name="EmployeeServices" EntityType="CurePawModel.EmployeeService" />
+          <EntitySet Name="EmployeeSpecialities" EntityType="CurePawModel.EmployeeSpeciality" />
+          <EntitySet Name="Pets" EntityType="CurePawModel.Pet" />
+          <EntitySet Name="PetTypes" EntityType="CurePawModel.PetType" />
+          <EntitySet Name="Services" EntityType="CurePawModel.Service" />
+          <EntitySet Name="ServiceCategories" EntityType="CurePawModel.ServiceCategory" />
+          <EntitySet Name="Users" EntityType="CurePawModel.User" />
+          <EntitySet Name="UserPets" EntityType="CurePawModel.UserPet" />
+          <EntitySet Name="UserRoles" EntityType="CurePawModel.UserRole" />
+          <AssociationSet Name="FK_Appointment_AppointmentStatus" Association="CurePawModel.FK_Appointment_AppointmentStatus">
+            <End Role="AppointmentStatu" EntitySet="AppointmentStatus" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Appointment_UserPets" Association="CurePawModel.FK_Appointment_UserPets">
+            <End Role="UserPet" EntitySet="UserPets" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentServices_Appointment1" Association="CurePawModel.FK_AppointmentServices_Appointment1">
+            <End Role="Appointment" EntitySet="Appointments" />
+            <End Role="AppointmentService" EntitySet="AppointmentServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentServices_EmployeeServices" Association="CurePawModel.FK_AppointmentServices_EmployeeServices">
+            <End Role="EmployeeService" EntitySet="EmployeeServices" />
+            <End Role="AppointmentService" EntitySet="AppointmentServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoryServices_User" Association="CurePawModel.FK_CategoryServices_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="EmployeeService" EntitySet="EmployeeServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeCategories_Service" Association="CurePawModel.FK_EmployeeCategories_Service">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="EmployeeService" EntitySet="EmployeeServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_EmployeeSpeciality" Association="CurePawModel.FK_User_EmployeeSpeciality">
+            <End Role="EmployeeSpeciality" EntitySet="EmployeeSpecialities" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pet_PetType" Association="CurePawModel.FK_Pet_PetType">
+            <End Role="PetType" EntitySet="PetTypes" />
+            <End Role="Pet" EntitySet="Pets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersPet_Pet" Association="CurePawModel.FK_UsersPet_Pet">
+            <End Role="Pet" EntitySet="Pets" />
+            <End Role="UserPet" EntitySet="UserPets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_EmployeeCategory" Association="CurePawModel.FK_Service_EmployeeCategory">
+            <End Role="ServiceCategory" EntitySet="ServiceCategories" />
+            <End Role="Service" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserRole" Association="CurePawModel.FK_User_UserRole">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersPet_User" Association="CurePawModel.FK_UsersPet_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserPet" EntitySet="UserPets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PetId" Type="Int32" />
+          <NavigationProperty Name="AppointmentStatu" Relationship="CurePawModel.FK_Appointment_AppointmentStatus" FromRole="Appointment" ToRole="AppointmentStatu" />
+          <NavigationProperty Name="UserPet" Relationship="CurePawModel.FK_Appointment_UserPets" FromRole="Appointment" ToRole="UserPet" />
+          <NavigationProperty Name="AppointmentServices" Relationship="CurePawModel.FK_AppointmentServices_Appointment1" FromRole="Appointment" ToRole="AppointmentService" />
+        </EntityType>
+        <EntityType Name="AppointmentService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Appointment" Type="Int32" />
+          <Property Name="service" Type="Int32" />
+          <NavigationProperty Name="Appointment1" Relationship="CurePawModel.FK_AppointmentServices_Appointment1" FromRole="AppointmentService" ToRole="Appointment" />
+          <NavigationProperty Name="EmployeeService" Relationship="CurePawModel.FK_AppointmentServices_EmployeeServices" FromRole="AppointmentService" ToRole="EmployeeService" />
+        </EntityType>
+        <EntityType Name="AppointmentStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Appointments" Relationship="CurePawModel.FK_Appointment_AppointmentStatus" FromRole="AppointmentStatu" ToRole="Appointment" />
+        </EntityType>
+        <EntityType Name="EmployeeService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="service" Type="Int32" />
+          <NavigationProperty Name="AppointmentServices" Relationship="CurePawModel.FK_AppointmentServices_EmployeeServices" FromRole="EmployeeService" ToRole="AppointmentService" />
+          <NavigationProperty Name="User" Relationship="CurePawModel.FK_CategoryServices_User" FromRole="EmployeeService" ToRole="User" />
+          <NavigationProperty Name="Service1" Relationship="CurePawModel.FK_EmployeeCategories_Service" FromRole="EmployeeService" ToRole="Service" />
+        </EntityType>
+        <EntityType Name="EmployeeSpeciality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="CurePawModel.FK_User_EmployeeSpeciality" FromRole="EmployeeSpeciality" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Pet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Breed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PetType" Relationship="CurePawModel.FK_Pet_PetType" FromRole="Pet" ToRole="PetType" />
+          <NavigationProperty Name="UserPets" Relationship="CurePawModel.FK_UsersPet_Pet" FromRole="Pet" ToRole="UserPet" />
+        </EntityType>
+        <EntityType Name="PetType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Pets" Relationship="CurePawModel.FK_Pet_PetType" FromRole="PetType" ToRole="Pet" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Category" Type="Int32" />
+          <NavigationProperty Name="EmployeeServices" Relationship="CurePawModel.FK_EmployeeCategories_Service" FromRole="Service" ToRole="EmployeeService" />
+          <NavigationProperty Name="ServiceCategory" Relationship="CurePawModel.FK_Service_EmployeeCategory" FromRole="Service" ToRole="ServiceCategory" />
+        </EntityType>
+        <EntityType Name="ServiceCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Services" Relationship="CurePawModel.FK_Service_EmployeeCategory" FromRole="ServiceCategory" ToRole="Service" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="SpecialityId" Type="Int32" />
+          <NavigationProperty Name="EmployeeServices" Relationship="CurePawModel.FK_CategoryServices_User" FromRole="User" ToRole="EmployeeService" />
+          <NavigationProperty Name="EmployeeSpeciality" Relationship="CurePawModel.FK_User_EmployeeSpeciality" FromRole="User" ToRole="EmployeeSpeciality" />
+          <NavigationProperty Name="UserRole" Relationship="CurePawModel.FK_User_UserRole" FromRole="User" ToRole="UserRole" />
+          <NavigationProperty Name="UserPets" Relationship="CurePawModel.FK_UsersPet_User" FromRole="User" ToRole="UserPet" />
+        </EntityType>
+        <EntityType Name="UserPet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Client" Type="Int32" />
+          <Property Name="pet" Type="Int32" />
+          <NavigationProperty Name="Appointments" Relationship="CurePawModel.FK_Appointment_UserPets" FromRole="UserPet" ToRole="Appointment" />
+          <NavigationProperty Name="Pet1" Relationship="CurePawModel.FK_UsersPet_Pet" FromRole="UserPet" ToRole="Pet" />
+          <NavigationProperty Name="User" Relationship="CurePawModel.FK_UsersPet_User" FromRole="UserPet" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="CurePawModel.FK_User_UserRole" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Appointment_AppointmentStatus">
+          <End Type="CurePawModel.AppointmentStatu" Role="AppointmentStatu" Multiplicity="0..1" />
+          <End Type="CurePawModel.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppointmentStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Appointment_UserPets">
+          <End Type="CurePawModel.UserPet" Role="UserPet" Multiplicity="0..1" />
+          <End Type="CurePawModel.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="PetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentServices_Appointment1">
+          <End Type="CurePawModel.Appointment" Role="Appointment" Multiplicity="0..1" />
+          <End Type="CurePawModel.AppointmentService" Role="AppointmentService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppointmentService">
+              <PropertyRef Name="Appointment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentServices_EmployeeServices">
+          <End Type="CurePawModel.EmployeeService" Role="EmployeeService" Multiplicity="0..1" />
+          <End Type="CurePawModel.AppointmentService" Role="AppointmentService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeService">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppointmentService">
+              <PropertyRef Name="service" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoryServices_User">
+          <End Type="CurePawModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CurePawModel.EmployeeService" Role="EmployeeService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeService">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeCategories_Service">
+          <End Type="CurePawModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="CurePawModel.EmployeeService" Role="EmployeeService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeService">
+              <PropertyRef Name="service" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_EmployeeSpeciality">
+          <End Type="CurePawModel.EmployeeSpeciality" Role="EmployeeSpeciality" Multiplicity="0..1" />
+          <End Type="CurePawModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeSpeciality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="SpecialityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pet_PetType">
+          <End Type="CurePawModel.PetType" Role="PetType" Multiplicity="0..1" />
+          <End Type="CurePawModel.Pet" Role="Pet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pet">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersPet_Pet">
+          <End Type="CurePawModel.Pet" Role="Pet" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CurePawModel.UserPet" Role="UserPet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPet">
+              <PropertyRef Name="pet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_EmployeeCategory">
+          <End Type="CurePawModel.ServiceCategory" Role="ServiceCategory" Multiplicity="0..1" />
+          <End Type="CurePawModel.Service" Role="Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserRole">
+          <End Type="CurePawModel.UserRole" Role="UserRole" Multiplicity="0..1" />
+          <End Type="CurePawModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersPet_User">
+          <End Type="CurePawModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CurePawModel.UserPet" Role="UserPet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPet">
+              <PropertyRef Name="Client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CurePawModelContainer" CdmEntityContainer="CurePawEntities">
+          <EntitySetMapping Name="Appointments">
+            <EntityTypeMapping TypeName="CurePawModel.Appointment">
+              <MappingFragment StoreEntitySet="Appointment">
+                <ScalarProperty Name="PetId" ColumnName="PetId" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppointmentServices">
+            <EntityTypeMapping TypeName="CurePawModel.AppointmentService">
+              <MappingFragment StoreEntitySet="AppointmentServices">
+                <ScalarProperty Name="service" ColumnName="service" />
+                <ScalarProperty Name="Appointment" ColumnName="Appointment" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppointmentStatus">
+            <EntityTypeMapping TypeName="CurePawModel.AppointmentStatu">
+              <MappingFragment StoreEntitySet="AppointmentStatus">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeServices">
+            <EntityTypeMapping TypeName="CurePawModel.EmployeeService">
+              <MappingFragment StoreEntitySet="EmployeeServices">
+                <ScalarProperty Name="service" ColumnName="service" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeSpecialities">
+            <EntityTypeMapping TypeName="CurePawModel.EmployeeSpeciality">
+              <MappingFragment StoreEntitySet="EmployeeSpeciality">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pets">
+            <EntityTypeMapping TypeName="CurePawModel.Pet">
+              <MappingFragment StoreEntitySet="Pet">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Breed" ColumnName="Breed" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PetTypes">
+            <EntityTypeMapping TypeName="CurePawModel.PetType">
+              <MappingFragment StoreEntitySet="PetType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="CurePawModel.Service">
+              <MappingFragment StoreEntitySet="Service">
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceCategories">
+            <EntityTypeMapping TypeName="CurePawModel.ServiceCategory">
+              <MappingFragment StoreEntitySet="ServiceCategory">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CurePawModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="SpecialityId" ColumnName="SpecialityId" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPets">
+            <EntityTypeMapping TypeName="CurePawModel.UserPet">
+              <MappingFragment StoreEntitySet="UserPets">
+                <ScalarProperty Name="pet" ColumnName="pet" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="CurePawModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram DiagramId="ca808f0935b146fd9ea03e63c6a258ca" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="CurePawModel.Appointment" Width="1.5" PointX="7.5" PointY="3.5" />
+        <EntityTypeShape EntityType="CurePawModel.AppointmentService" Width="1.5" PointX="7.5" PointY="0.875" />
+        <EntityTypeShape EntityType="CurePawModel.AppointmentStatu" Width="1.5" PointX="5.25" PointY="7.5" />
+        <EntityTypeShape EntityType="CurePawModel.EmployeeService" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="CurePawModel.EmployeeSpeciality" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="CurePawModel.Pet" Width="1.5" PointX="3.125" PointY="10.25" />
+        <EntityTypeShape EntityType="CurePawModel.PetType" Width="1.5" PointX="0.875" PointY="10.25" />
+        <EntityTypeShape EntityType="CurePawModel.Service" Width="1.5" PointX="3" PointY="7.75" />
+        <EntityTypeShape EntityType="CurePawModel.ServiceCategory" Width="1.5" PointX="0.75" PointY="8" />
+        <EntityTypeShape EntityType="CurePawModel.User" Width="1.5" PointX="3" PointY="3" />
+        <EntityTypeShape EntityType="CurePawModel.UserPet" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="CurePawModel.UserRole" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="CurePawModel.FK_Appointment_AppointmentStatus" />
+        <AssociationConnector Association="CurePawModel.FK_Appointment_UserPets" />
+        <AssociationConnector Association="CurePawModel.FK_AppointmentServices_Appointment1" />
+        <AssociationConnector Association="CurePawModel.FK_AppointmentServices_EmployeeServices" />
+        <AssociationConnector Association="CurePawModel.FK_CategoryServices_User" />
+        <AssociationConnector Association="CurePawModel.FK_EmployeeCategories_Service" />
+        <AssociationConnector Association="CurePawModel.FK_User_EmployeeSpeciality" />
+        <AssociationConnector Association="CurePawModel.FK_Pet_PetType" />
+        <AssociationConnector Association="CurePawModel.FK_UsersPet_Pet" />
+        <AssociationConnector Association="CurePawModel.FK_Service_EmployeeCategory" />
+        <AssociationConnector Association="CurePawModel.FK_User_UserRole" />
+        <AssociationConnector Association="CurePawModel.FK_UsersPet_User" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

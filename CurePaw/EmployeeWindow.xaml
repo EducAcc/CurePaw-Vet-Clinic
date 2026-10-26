@@ -1,0 +1,53 @@
+﻿<Window x:Class="CurePaw.EmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurePaw"
+        mc:Ignorable="d"
+        Title="Информация о сотруднике" MinHeight="300" SizeToContent="Height" Width="300">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.05*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="3" Grid.Row="0" Margin="0 0 0 20">
+            <Label Content="Сотрудник"/>
+            <ComboBox Name="EmployeeCombo" DisplayMemberPath="FullName" SelectedItem="{Binding CurrentUser, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <Label Content="Фамилия"/>
+            <TextBox Name="SurnameField" Text="{Binding CurrentUser.Surname, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Имя"/>
+            <TextBox Name="NameField" Text="{Binding CurrentUser.Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Отчество"/>
+            <TextBox Name="PatronymicField" Text="{Binding CurrentUser.Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Email"/>
+            <TextBox Name="EmailField" Text="{Binding CurrentUser.Email, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="1">
+            <Label Content="Телефон"/>
+            <TextBox Name="PhoneField" Text="{Binding CurrentUser.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Специальность"/>
+            <ComboBox Name="CategoryCombo" DisplayMemberPath="Name" SelectedItem="{Binding CurrentUser.EmployeeCategory, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Логин"/>
+            <TextBox Name="LoginField" Text="{Binding CurrentUser.Login, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Пароль"/>
+            <TextBox Name="PasswordField" Text="{Binding CurrentUser.Password, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <Button Content="Сохранить" IsDefault="True" Click="SaveBtn_Click" Grid.Row="2" Grid.ColumnSpan="3" Margin="20"/>
+    </Grid>
+
+</Window>

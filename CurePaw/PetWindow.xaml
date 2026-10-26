@@ -1,0 +1,26 @@
+﻿<Window x:Class="CurePaw.PetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurePaw"
+        mc:Ignorable="d"
+        Title="Информация о питомце" MinHeight="370" SizeToContent="Height" Width="300">
+
+    <Grid Margin="15">
+        <StackPanel Name="PetDataPanel">
+            <Label Content="Питомец"/>
+            <ComboBox Name="PetCombo" DisplayMemberPath="Name" SelectedItem="{Binding CurrentPet, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Кличка"/>
+            <TextBox Name="PetNameField" Text="{Binding CurrentPet.Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Порода"/>
+            <TextBox Name="PetBreedField" Text="{Binding CurrentPet.Breed, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Тип"/>
+            <ComboBox Name="PetTypeCombo" DisplayMemberPath="Name" SelectedItem="{Binding CurrentPet.PetType, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Дополнительная информация"/>
+            <TextBox Name="PetDescriptionField" Text="{Binding CurrentPet.Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" MaxHeight="60" Height="Auto"/>
+
+            <Button Content="Сохранить" IsDefault="True" Click="SavePetBtn_Click" Margin="20 30 20 0"/>
+        </StackPanel>
+    </Grid>
+</Window>
